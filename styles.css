@@ -1,0 +1,147 @@
+body {
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+}
+
+.topContainer {
+    display: block;
+    padding: auto;
+    margin: auto;
+    text-align: center;
+}
+
+.td2 {
+    text-align: left;
+    padding-top: 2px;
+    color: #666B85;
+}
+
+.mainContainer {
+    display: table;
+    margin: auto;
+    padding-bottom: 30px;
+}
+
+
+rect {
+    stroke-width: 3px;
+    /*opacity: .8;*/
+}
+
+.branchText, .nodeText, .jointProbText, .rootResults {
+    font-size: 14px;
+}
+
+
+.probabilityText {
+    font-size: 14px;
+    fill:#a00e15;
+    font-weight: 500;
+}
+
+.expValue {
+    font: 12px 'Lato';
+}
+
+.link {
+    fill: none;
+    /*stroke: #ccc;*/
+    /* stroke: #0B0B0B; */
+    stroke-width: 2px;
+}
+
+.givenProb {
+    font-family: 'Lato';
+    font-size: 14px;
+    text-align: center;
+    fill: #a00e15;
+}
+
+.combinedProbLabels {
+    font-family: 'Lato';
+    font-size: 13px;
+    width: 55px;
+    text-align: center;
+    fill: black;
+}
+
+.input_val {
+    display: inline-block;
+    width: 300px;
+    text-align: right;
+}
+
+.infoContainer {
+    display: table;  
+    margin: auto;  
+}
+
+.infoBox {
+    display: table-row;
+}
+
+.buttonBox {
+    display: table-cell;
+    padding: 20px;
+}
+
+form {
+    margin: auto;
+}
+
+fieldset {
+    width: 300px;
+    height: 200px;
+    border-radius: 5px;
+    legend {
+        font-size: 15px;
+    }
+}
+
+.input-group {
+    font-size: 12.5px;
+    margin: auto;
+}
+
+/* Input fields */
+form.aligned-input {
+    display: table;
+}
+
+form.aligned-input .input-group, form.aligned-input .submit-group, .input-group.aligned {
+    display: table-row;
+}
+
+form.aligned-input label, form.aligned-input input, form.aligned-input select, form.aligned-input textarea, .input-group.aligned label, .input-group.aligned input, .input-group.aligned select, .input-group.aligned textarea {
+    display: table-cell;
+}
+
+form.aligned-input label, .input-group.aligned label {
+    text-align: right;
+    padding-right: 1rem;
+    font-size: 12.5px;
+}
+
+#checkBoxLabel {
+    padding-right: 0.2rem;
+}
+
+form.inline-input .input-group, form.inline-input .submit-group, .input-group.inline, .submit-group.inline {
+    display: inline-block;
+}
+
+.input-group:after {
+    content: "";
+    display: block;
+    margin-bottom: 1rem;
+}
+
+
+input[type="submit"], input[type="reset"] {
+    margin: 0 0.25rem;
+}
+
+
+fieldset {
+    padding: 1em
+}
