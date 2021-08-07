@@ -2,7 +2,7 @@ var data = [
     {
         "name": "Total",
         "num": "0",
-        "display": "Treat/¬Treat",
+        "display": "Expected Value",
         "parent": "null",
         "children": [
             {
@@ -32,7 +32,7 @@ var data = [
                             },
                             {
                                 "name": "Treat&Cure&¬Symptoms",
-                                "display": "¬Symptoms",
+                                "display": "No Symptoms",
                                 "num": "8",
                                 "givenName": "P(¬Symptoms|TC)",
                                 "parentTree": "Treat",
@@ -43,7 +43,7 @@ var data = [
                     {
                         "name": "Treat&¬Cure",
                         "num": "4",
-                        "display": "¬Cure",
+                        "display": "No Cure",
                         "givenName": "P(¬Cure|Treat)",
                         "parentTree": "Treat",
                         "children": [
@@ -59,7 +59,7 @@ var data = [
                             },
                             {
                                 "name": "Treat&¬Cure&¬Symptoms",
-                                "display": "¬Symptoms",
+                                "display": "No Symptoms",
                                 "num": "10",
                                 "givenName": "P(¬Symptoms|T¬C)",
                                 "parentTree": "Treat",
@@ -72,7 +72,7 @@ var data = [
             {
                 "name": "¬Treat",
                 "decisionNode": "True",
-                "display": "¬Treat",
+                "display": "No Treat",
                 "num": "2",
                 "parentTree": "NoTreat",
                 "children": [
@@ -95,7 +95,7 @@ var data = [
                             },
                             {
                                 "name": "¬Treat&Cure&¬Symptoms",
-                                "display": "¬Symptoms",
+                                "display": "No Symptoms",
                                 "num": "12",
                                 "givenName": "P(¬Symptoms|¬TC)",
                                 "parentTree": "NoTreat",
@@ -105,7 +105,7 @@ var data = [
                     },
                     {
                         "name": "¬Treat&¬Cure",
-                        "display": "¬Cure",
+                        "display": "No Cure",
                         "num": "6",
                         "given": ".9",
                         "givenName": "P(¬Treat|¬Cure)",
@@ -122,7 +122,7 @@ var data = [
                             },
                             {
                                 "name": "¬Treat&¬Cure&¬Symptoms",
-                                "display": "¬Symptoms",
+                                "display": "No Symptoms",
                                 "num": "14",
                                 "givenName": "P(¬Symptoms|¬T¬C)",
                                 "parentTree": "NoTreat",
@@ -145,7 +145,6 @@ var margin = { top: 00, right: 140, bottom: 0, left: 90 },
     height = 1000 - margin.top - margin.bottom + (grandChildSpacing * 4);
 
 var i = 0;
-var radius = 40;
 
 var tree = d3.layout.tree()
     .nodeSize([80, 100])
@@ -219,7 +218,6 @@ d3.select("#noCureSymptoms").attr("value", treatNotCureSymptoms.value);
 d3.select("#noCureNoSymptoms").attr("value", treatNotCureNotSymptoms.value);
 
 
-
 d3.select("#treatmentForm").on("submit", function() {
     updateAll();
 })
@@ -233,7 +231,6 @@ d3.select("#noTreatmentForm").on("submit", function() {
 d3.select("#assignedValsForm").on("submit", function() {
     updateAll();
 })
-
 
 
 updateAll();
@@ -290,24 +287,24 @@ function updateProbabilities() {
 function updateExpectedValues() {
     // update values from user input
     var cure_symptoms_value = d3.select("#cureSymptoms").property("value");
-    cure_symptoms_value = Number(cure_symptoms_value).toFixed(2);
-    treatCureSymptoms.value = cure_symptoms_value
-    notTreatCureSymptoms.value = cure_symptoms_value
-
+    cure_symptoms_value = Number(cure_symptoms_value)
     var cure_no_symptoms_val = d3.select("#cureNoSymptoms").property("value");
     cure_no_symptoms_val = Number(cure_no_symptoms_val).toFixed(2);
-    treatCureNotSymptoms.value = cure_no_symptoms_val
-    notTreatCureNotSymptoms.value = cure_no_symptoms_val
-
     var no_cure_symptoms_val = d3.select("#noCureSymptoms").property("value");
     no_cure_symptoms_val = Number(no_cure_symptoms_val).toFixed(2);
-    treatNotCureSymptoms.value = no_cure_symptoms_val
-    notTreatNotCureSymptoms.value = no_cure_symptoms_val
-
     var no_cure_no_symptoms_val = d3.select("#noCureNoSymptoms").property("value");
     no_cure_no_symptoms_val = Number(no_cure_no_symptoms_val).toFixed(2);
-    treatNotCureNotSymptoms.value = no_cure_no_symptoms_val
-    notTreatNotCureNotSymptoms.value = no_cure_no_symptoms_val
+
+    // layer 3
+    treatCureSymptoms.value = (cure_symptoms_value * treatCureSymptoms.probability).toFixed(2);
+    treatCureNotSymptoms.value = (cure_no_symptoms_val * treatCureNotSymptoms.probability).toFixed(2)
+    treatNotCureSymptoms.value = (no_cure_symptoms_val * treatNotCureSymptoms.probability).toFixed(2)
+    treatNotCureNotSymptoms.value = (no_cure_no_symptoms_val * treatNotCureNotSymptoms.probability).toFixed(2)
+
+    notTreatCureSymptoms.value = (cure_symptoms_value * notTreatCureSymptoms.probability).toFixed(2)
+    notTreatCureNotSymptoms.value = (cure_no_symptoms_val * notTreatCureNotSymptoms.probability).toFixed(2)
+    notTreatNotCureSymptoms.value = (no_cure_symptoms_val * notTreatNotCureSymptoms.probability).toFixed(2)
+    notTreatNotCureNotSymptoms.value = (no_cure_no_symptoms_val * notTreatNotCureNotSymptoms.probability).toFixed(2)
 
 
     // expected values
@@ -414,12 +411,8 @@ function update(source) {
         .attr("transform", "translate(-60,-370)");
       
     var legendColor = d3.legendColor()
-        //d3 symbol creates a path-string, for example
-        //"M0,-8.059274488676564L9.306048591020996,
-        //8.059274488676564 -9.306048591020996,8.059274488676564Z"
         .shape("path", d3.symbol().type(d3.symbolCircle).size(150)())
         .shapePadding(10)
-        //use cellFilter to hide the "e" cell
         .scale(ordinal);
       
     svg.select(".legendOrdinal")
@@ -450,7 +443,20 @@ function update(source) {
     })
 
     
+    //=================================================================
+    // End Legends
+    // ================================================================
 
+        
+    //=================================================================
+    // Build Graph
+    // ================================================================
+
+    
+    
+    //=================================================================
+    // Edges
+    // ================================================================
     var linkEnter = link.enter().insert("line")
         .attr("class", "link")
         .attr("x1", function (d) {
@@ -473,10 +479,10 @@ function update(source) {
         })
         .attr("marker-end","url(#arrow)");
    
-    
-    
 
-    // Enter the nodes.
+    //=================================================================
+    // Build Nodes
+    // ================================================================
     var nodeEnter = node.
         enter().append("g")
         .attr("class", "node")
@@ -503,7 +509,21 @@ function update(source) {
 
 
     
-    // Add a circle around the node
+    //=================================================================
+    // Node - Shape
+    // ================================================================
+    // node variables
+    var widthHeight = 95
+    var nodeXpos = -48
+    var nodeYpos = -50
+
+    // root variables
+    var rootWidth = 200
+    var rootHeight = 140
+    var rootXpos = -20
+    var rootYpos = -75
+
+
     nodeEnter.append("rect")
         .attr("rx", function (d) {
             if (d.decisionNode == "True") { //only decision nodes are square
@@ -525,33 +545,32 @@ function update(source) {
         })
         .attr("width", function(d) {
             if (d == root) {
-                return 280
+                return rootWidth
             }
-            return 90
+            return widthHeight
         })
             
         .attr("height", function(d) {
             if (d == root) {
-                return 150
+                return rootHeight
             }
-            return 90
+            return widthHeight
         })
         .attr("x", function(d) {
             if (d == root) {
-                return -85
+                return rootXpos
             }
-            return -45
+            return nodeXpos
         })
         .attr("y", function(d) {
             if (d == root) {
-                return -75
+                return rootYpos
             }
-            return -45
+            return nodeYpos
         })
         .style("stroke", function(d) {
             if (d == root) {
                 return baseStrokeColor
-                // return baseStrokeColor
             } else {
                 if (d.parentTree == "Treat") {
                     return blueColor(d.value)
@@ -581,7 +600,12 @@ function update(source) {
             }
         })
 
-    // Add the name of the node
+    //=================================================================
+    // Node - Text
+    // ================================================================
+    var rootTextXpos = "25"
+    var rootTextYpos = "-35"
+    
     nodeEnter.append("text")
         .text(function (d) {
             return d.display;
@@ -593,7 +617,13 @@ function update(source) {
         })
         .attr("id", function(d) {
             if (d == root) {
-                return "rootResultsDecision"
+                return "rootTitle"
+            }
+        })
+
+        .attr("font-weight", function(d) {
+            if (d==root) {
+                return 900
             }
         })
 
@@ -606,12 +636,12 @@ function update(source) {
         .style("fill-opacity", 1)
         .attr("x", function(d) {
             if (d == root) {
-                return "-60"
+                return rootTextXpos
             }
         })
         .attr("y", function(d) {
             if (d == root) {
-                return "-45"
+                return rootTextYpos
             }
         })
         .attr("class", "nodeText")
@@ -641,6 +671,32 @@ function update(source) {
         })
         .attr("id", "jointProb");
 
+    
+    // append root text
+    nodeEnter.append("text")
+        .attr("class", function(d) {
+            if (d == root) {
+                return "rootResults"
+            }
+        })
+        .attr("id", function(d) {
+            if (d == root) {
+                return "treatResults"
+            }
+        })
+    
+    nodeEnter.append("text")
+        .attr("class", function(d) {
+            if (d == root) {
+                return "rootResults"
+            }
+        })
+        .attr("id", function(d) {
+            if (d == root) {
+                return "noTreatResults"
+            }
+        })
+    
     nodeEnter.append("text")
         .attr("class", function(d) {
             if (d == root) {
@@ -653,53 +709,6 @@ function update(source) {
             }
         })
     
-    nodeEnter.append("text")
-        .attr("class", function(d) {
-            if (d == root) {
-                return "rootResults"
-            }
-        })
-        .attr("id", function(d) {
-            if (d == root) {
-                return "rootContribCureSymp"
-            }
-        })
-    
-    nodeEnter.append("text")
-        .attr("class", function(d) {
-            if (d == root) {
-                return "rootResults"
-            }
-        })
-        .attr("id", function(d) {
-            if (d == root) {
-                return "rootContribCureNoSymp"
-            }
-        })
-    
-    nodeEnter.append("text")
-        .attr("class", function(d) {
-            if (d == root) {
-                return "rootResults"
-            }
-        })
-        .attr("id", function(d) {
-            if (d == root) {
-                return "rootContribNoCureSymp"
-            }
-        })
-    nodeEnter.append("text")
-        .attr("class", function(d) {
-            if (d == root) {
-                return "rootResults"
-            }
-        })
-        .attr("id", function(d) {
-            if (d == root) {
-                return "rootContribNoCureNoSymp"
-            }
-        })
-
     // Add the exp val of the node
     nodeEnter.append("text")
         .text(function (d) {
@@ -787,9 +796,14 @@ function update(source) {
             .attr("opacity", 0)
         d3.selectAll('.jointProbText')
             .attr("opacity", 0)
-        
+        d3.selectAll(".expValue")
+            .attr("opacity", function (d) {
+                if (d.name == "Treat" | d.name == "¬Treat") {
+                    return 100
+                }
+                return 0;
+            })
     }
-
     function showProbabilities() {
         d3.selectAll('.branchText')
             .attr("opacity", 100)
@@ -797,14 +811,20 @@ function update(source) {
             .attr("opacity", 100)
         d3.selectAll('.jointProbText')
             .attr("opacity", 100)
+        d3.selectAll(".expValue") 
+            .attr("opacity", 100)
     }
+    
+    
     //============================================================
     // UPDATE TREE AFTER USER INPUT CHANGE
     //============================================================
     
+    
     function higherExpVal() {
-        var treatExpVal = root.children[0].value
-        var noTreatExpVal = root.children[1].value
+        //returns which tree has higher exp value
+        var treatExpVal = Number(root.children[0].value)
+        var noTreatExpVal = Number(root.children[1].value)
         if (treatExpVal > noTreatExpVal) {
             return "Treat"
         }
@@ -815,9 +835,10 @@ function update(source) {
     }
     
     function colorHigherExpVal() {
+        //returns the 
         var higherEV = higherExpVal(root)
-        var treatExpVal = root.children[0].value
-        var noTreatExpVal = root.children[1].value
+        var treatExpVal = Number(root.children[0].value)
+        var noTreatExpVal = Number(root.children[1].value)
 
         if (higherEV == "Treat") {
             return blueColor(treatExpVal);
@@ -860,14 +881,42 @@ function update(source) {
     // update nodes stroke and root text    
     d3.selectAll("rect")
         .style("stroke", function(d) {
-            if (d == root) {
-                return colorHigherExpVal()
-            } else {
-                if (d.parentTree == "Treat") {
-                    return blueColor(d.value)
+            var treatExpVal = Number(root.children[0].value)
+            var noTreatExpVal = Number(root.children[1].value)
+
+            if (treatExpVal > noTreatExpVal) { // treat exp value greater
+                
+                if (d == root) {
+                    return maxBlue
                 }
-                return orangeColor(d.value)
+                if (d.parentTree == "Treat") { // Treat tree
+                    return maxBlue
+
+                } else {  // not Treat tree   
+                    return minOrange
+                }
             }
+            if (treatExpVal < noTreatExpVal) { // not Treat exp value greater
+                if (d == root) {
+                    return maxOrange
+                }
+                if (d.parentTree == "Treat") {// Treat tree 
+                    return minBlue
+
+                } else { // not Treat tree
+                    return maxOrange
+                }
+            }
+             //equal exp value
+
+            if (d == root) {
+                return baseStrokeColor
+            }
+            
+            if (d.parentTree == "Treat") {
+                return minBlue;
+            }
+            return minOrange;
         })
         .attr("fill", function(d) {
             if (d == root) {
@@ -892,142 +941,78 @@ function update(source) {
     // update link colors
     d3.selectAll(".link")
         .attr("stroke", function (d) {
-            if (d.source == root) {
-                var treatExpVal = root.children[0].value
-                var noTreatExpVal = root.children[1].value
-                // treat tree
-                if (d.target.parentTree == "Treat") {
-                    // treat EV is higher
-                    if (treatExpVal >= noTreatExpVal) {
-                        return blueColor(treatExpVal);
-                    }
-                    return "white" // hide link
-                }
-                // no treat tree
-                 // treat tree
-                 if (d.target.parentTree == "NoTreat") {
-                    // no treat EV is higher
-                    if (noTreatExpVal >= treatExpVal) {
-                        return orangeColor(noTreatExpVal);
-                    }
-                    return "white" // hide link
-                }
+            var treatExpVal = Number(root.children[0].value)
+            var noTreatExpVal = Number(root.children[1].value)
+            
+            if (treatExpVal > noTreatExpVal) { // treat exp value greater
+                
+                if (d.target.parentTree == "Treat") { // Treat tree
+                    return maxBlue
 
-            } 
-            var scale = d.target.given * d.target.value
-            if (d.target.parentTree == "Treat") {
-                return blueColor(scale);
+                } else {  // not Treat tree   
+                    return minOrange
+                }
             }
-            return orangeColor(scale);
+
+            if (treatExpVal < noTreatExpVal) { // not Treat exp value greater
+                
+                if (d.target.parentTree == "Treat") {// Treat tree 
+                    return minBlue
+
+                } else { // not Treat tree
+                    return maxOrange
+                }
+            }
+
+             //equal exp value
+            if (d.target.parentTree == "Treat") {
+                return minBlue;
+            }
+            return minOrange;
         });
 
-    d3.select("#rootResultsDecision")
+    
+    // d3.select("#rootTitle")
+    //     .text(function (d) {
+    //         if (d == root) {
+    //             var treatExpVal = Number(root.children[0].value)
+    //             var noTreatExpVal = Number(root.children[1].value)
+    //             if (treatExpVal > noTreatExpVal) {
+    //                 return "Treat: " + treatExpVal + " > No Treat: " + noTreatExpVal;
+    //             }
+    //             if (treatExpVal < noTreatExpVal) {
+    //                 return "No Treatment > Treatment "
+    //             }
+    //             return "Equal Expected Return"
+    //         }
+    //     })
+    //     .attr("font-weight", 900)
+
+    
+    
+    d3.select("#treatResults")
         .text(function (d) {
-            if (d == root) {
-                var treatExpVal = d.children[0].value
-                var noTreatExpVal = d.children[1].value
-                if (treatExpVal > noTreatExpVal) {
-                    return "Treatment > No Treatment "
-                }
-                if (treatExpVal < noTreatExpVal) {
-                    return "No Treatment > Treatment "
-                }
-                return "Equal Expected Return"
-            }
+            var treatEV = d.children[0].value
+            return "Treat = " + treatEV
         })
-        .attr("font-weight", 900)
+        .attr("x", 25)
+        .attr("y", -10)
+    
+    d3.select("#noTreatResults")
+        .text(function (d) {
+            var noTreatEV = d.children[1].value
+            return "No Treat = " + noTreatEV
+        })
+        .attr("x", 25)
+        .attr("y", 10)
 
     d3.select("#rootDiffText")
         .text(function (d) {
-            if (d.children[0].value == d.children[1].value) {
-                return ""
-            }
             var diff = Math.abs(d.children[0].value -  d.children[1].value).toFixed(2);
             return "Difference = " + diff
         })
-        .attr("x", -60)
-        .attr("y", -25)
-
-
-    d3.select("#rootContribCureSymp")
-        .text(function (d) {
-            if (d.children[0].value == d.children[1].value) {
-                return ""
-            }
-            var cure_symptoms_value = d3.select("#cureSymptoms").property("value");
-            cure_symptoms_value = Number(cure_symptoms_value).toFixed(2);
-            var higherEVBranch = higherExpVal()
-            if (higherEVBranch == "Treat") {
-                var jointProb = (treatCure.given * treatCureSymptoms.given).toFixed(2);
-                var contribution = (jointProb * cure_symptoms_value).toFixed(2)
-                return "Cure and Symptoms = " + contribution
-            }
-            var jointProb = (notTreatCure.given * notTreatCureSymptoms.given).toFixed(2)
-            var contribution = (jointProb * cure_symptoms_value).toFixed(2)
-            return "Cure and Symptoms = " + contribution
-        })
-        .attr("x", -60)
-        .attr("y", -5)
-
-    d3.select("#rootContribCureNoSymp")
-        .text(function (d) {
-            if (d.children[0].value == d.children[1].value) {
-                return ""
-            }
-            var cure_no_symptoms_val = d3.select("#cureNoSymptoms").property("value");
-            cure_no_symptoms_val = Number(cure_no_symptoms_val).toFixed(2);
-            var higherEVBranch = higherExpVal()
-            if (higherEVBranch == "Treat") {
-                var jointProb = (treatCure.given * treatCureNotSymptoms.given).toFixed(2);
-                var contribution = (jointProb * cure_no_symptoms_val).toFixed(2);
-                return "Cure and No Symptoms = " + contribution
-            }
-            var jointProb = (notTreatCure.given * notTreatCureNotSymptoms.given).toFixed(2)
-            var contribution = (jointProb * cure_no_symptoms_val).toFixed(2)
-            return "Cure and No Symptoms = " + contribution
-        })
-        .attr("x", -60)
-        .attr("y", 15)
-    
-    d3.select("#rootContribNoCureSymp")
-        .text(function (d) {
-            if (d.children[0].value == d.children[1].value) {
-                return ""
-            }
-            var no_cure_symptoms_val = d3.select("#noCureSymptoms").property("value");
-            no_cure_symptoms_val = Number(no_cure_symptoms_val).toFixed(2);
-            var higherEVBranch = higherExpVal()
-            if (higherEVBranch == "Treat") {
-                var jointProb = (treatNotCure.given * treatNotCureSymptoms.given).toFixed(2);
-                var contribution = (jointProb * no_cure_symptoms_val).toFixed(2);
-                return "No Cure and Symptoms = " + contribution
-            }
-            var jointProb = (notTreatNotCure.given * notTreatNotCureSymptoms.given).toFixed(2)
-            var contribution = (jointProb * no_cure_symptoms_val).toFixed(2)
-            return "No Cure and Symptoms = " + contribution
-        })
-        .attr("x", -60)
-        .attr("y", 35)
-
-    d3.select("#rootContribNoCureNoSymp")
-        .text(function (d) {
-            if (d.children[0].value == d.children[1].value) {
-                return ""
-            }
-            var no_cure_no_symptoms_val = d3.select("#noCureNoSymptoms").property("value");
-            no_cure_no_symptoms_val = Number(no_cure_no_symptoms_val).toFixed(2);
-            var higherEVBranch = higherExpVal()
-            if (higherEVBranch == "Treat") {
-                var jointProb = (treatNotCure.given * treatNotCureNotSymptoms.given).toFixed(2);
-                var contribution = (jointProb * no_cure_no_symptoms_val).toFixed(2);
-                return "No Cure and No Symptoms = " + contribution
-            }
-            var jointProb = (notTreatNotCure.given * notTreatNotCureNotSymptoms.given).toFixed(2)
-            var contribution = (jointProb * no_cure_no_symptoms_val).toFixed(2)
-            return "No Cure and No Symptoms = " + contribution
-        })
-        .attr("x", -60)
-        .attr("y", 55)
+        .attr("x", 25)
+        .attr("y", 30)
 
 
    	
