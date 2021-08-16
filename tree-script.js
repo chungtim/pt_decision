@@ -439,7 +439,8 @@ function update(source) {
         .call(legendPath);
     
     d3.selectAll(".legendSymbol path").each(function (d) {
-        d3.select(this).style("fill", baseStrokeColor)
+        d3.select(this).style("fill", "white")
+        d3.select(this).style("stroke", baseStrokeColor)
     })
 
     

@@ -40,7 +40,7 @@ rect {
 }
 
 .expValue {
-    font: 12px 'Lato';
+    font-size: 14px
 }
 
 .link {
@@ -62,7 +62,6 @@ rect {
     font-size: 13px;
     width: 55px;
     text-align: center;
-    fill: black;
 }
 
 .input_val {
