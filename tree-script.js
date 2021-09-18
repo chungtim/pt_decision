@@ -16,7 +16,7 @@ var data = [
                         "name": "Treat&Cure",
                         "num": "3",
                         "display": "Cure",
-                        "givenName": "P(Cure|Treat)",
+                        "givenName": "P(Cure)",
                         "given": ".30",
                         "parentTree": "Treat",
                         "children": [
@@ -25,7 +25,7 @@ var data = [
                                 "display": "Symptoms",
                                 "num": "7",
                                 "display": "Symptoms",
-                                "givenName": "P(Symptoms|TC)",
+                                "givenName": "P(Symptoms|Cure)",
                                 "given": ".40",
                                 "parentTree": "Treat",
                                 "value": "0"
@@ -34,7 +34,7 @@ var data = [
                                 "name": "Treat&Cure&¬Symptoms",
                                 "display": "No Symptoms",
                                 "num": "8",
-                                "givenName": "P(¬Symptoms|TC)",
+                                "givenName": "P(¬Symptoms|Cure)",
                                 "parentTree": "Treat",
                                 "value": "0"
                             }
@@ -44,15 +44,15 @@ var data = [
                         "name": "Treat&¬Cure",
                         "num": "4",
                         "display": "No Cure",
-                        "givenName": "P(¬Cure|Treat)",
+                        "givenName": "P(¬Cure)",
                         "parentTree": "Treat",
                         "children": [
                             {
                                 "name": "Treat&¬Cure&Symptoms",
-                                "display": "P(Symptoms|T¬C)",
+                                "display": "P(Symptoms|¬Cure)",
                                 "num": "9",
                                 "display": "Symptoms",
-                                "givenName": "P(Symptoms|T¬C)",
+                                "givenName": "P(Symptoms|¬Cure)",
                                 "given": ".40",
                                 "parentTree": "Treat",
                                 "value": "0"
@@ -61,7 +61,7 @@ var data = [
                                 "name": "Treat&¬Cure&¬Symptoms",
                                 "display": "No Symptoms",
                                 "num": "10",
-                                "givenName": "P(¬Symptoms|T¬C)",
+                                "givenName": "P(¬Symptoms|¬Cure)",
                                 "parentTree": "Treat",
                                 "value": "0"
                             }
@@ -81,14 +81,14 @@ var data = [
                         "display": "Cure",
                         "num": "5",
                         "given": ".20",
-                        "givenName": "P(Cure|¬Treat)",
+                        "givenName": "P(Cure)",
                         "parentTree": "NoTreat",
                         "children": [
                             {
                                 "name": "¬Treat&Cure&Symptoms",
                                 "display": "Symptoms",
                                 "num": "11",
-                                "givenName": "P(Symptoms|¬TC)",
+                                "givenName": "P(Symptoms|Cure)",
                                 "given": ".10",
                                 "parentTree": "NoTreat",
                                 "value": "10"
@@ -97,7 +97,7 @@ var data = [
                                 "name": "¬Treat&Cure&¬Symptoms",
                                 "display": "No Symptoms",
                                 "num": "12",
-                                "givenName": "P(¬Symptoms|¬TC)",
+                                "givenName": "P(¬Symptoms|Cure)",
                                 "parentTree": "NoTreat",
                                 "value": "10"
                             }
@@ -108,14 +108,14 @@ var data = [
                         "display": "No Cure",
                         "num": "6",
                         "given": ".9",
-                        "givenName": "P(¬Treat|¬Cure)",
+                        "givenName": "P(¬Cure)",
                         "parentTree": "NoTreat",
                         "children": [
                             {
                                 "name": "¬Treat&¬Cure&Symptoms",
                                 "display": "Symptoms",
                                 "num": "13",
-                                "givenName": "P(Symptoms|¬T¬C)",
+                                "givenName": "P(Symptoms|¬Cure)",
                                 "given": ".10",
                                 "parentTree": "NoTreat",
                                 "value": "10"
@@ -124,7 +124,7 @@ var data = [
                                 "name": "¬Treat&¬Cure&¬Symptoms",
                                 "display": "No Symptoms",
                                 "num": "14",
-                                "givenName": "P(¬Symptoms|¬T¬C)",
+                                "givenName": "P(¬Symptoms|¬Cure)",
                                 "parentTree": "NoTreat",
                                 "value": "10"
                             }
@@ -728,10 +728,15 @@ function update(source) {
         .text(function (d) {
             var text = "";
             if (d.depth == 3) {
-                var set1 = d.parent.parent.display;
-                var set2 = d.parent.display;
-                var set3 = d.display;
-                text = "P(" + set2 + " & " + set3 + "|" + set1 + ")";
+                var cureNoCure = d.parent.display;
+                var symptomNoSymptom = d.display;
+                if (cureNoCure.slice(0,2) == 'No') {
+                    cureNoCure = '¬Cure'
+                }
+                if (symptomNoSymptom.slice(0,2) == 'No') {
+                    symptomNoSymptom = '¬Symptoms'
+                }
+                text = "P(" + cureNoCure + " and " + symptomNoSymptom + ")";
             }
             return text;
         })
