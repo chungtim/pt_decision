@@ -15,8 +15,8 @@ var data = [
                     {
                         "name": "Treat&Cure",
                         "num": "3",
-                        "display": "Cure",
-                        "givenName": "P(Cure)",
+                        "display": "Control",
+                        "givenName": "P(Control)",
                         "given": ".30",
                         "parentTree": "Treat",
                         "children": [
@@ -25,7 +25,7 @@ var data = [
                                 "display": "Symptoms",
                                 "num": "7",
                                 "display": "Symptoms",
-                                "givenName": "P(Symptoms|Cure)",
+                                "givenName": "P(Symptoms|Control)",
                                 "given": ".40",
                                 "parentTree": "Treat",
                                 "value": "0"
@@ -34,7 +34,7 @@ var data = [
                                 "name": "Treat&Cure&¬Symptoms",
                                 "display": "No Symptoms",
                                 "num": "8",
-                                "givenName": "P(¬Symptoms|Cure)",
+                                "givenName": "P(¬Symptoms|Control)",
                                 "parentTree": "Treat",
                                 "value": "0"
                             }
@@ -43,16 +43,16 @@ var data = [
                     {
                         "name": "Treat&¬Cure",
                         "num": "4",
-                        "display": "No Cure",
-                        "givenName": "P(¬Cure)",
+                        "display": "No Control",
+                        "givenName": "P(¬Control)",
                         "parentTree": "Treat",
                         "children": [
                             {
                                 "name": "Treat&¬Cure&Symptoms",
-                                "display": "P(Symptoms|¬Cure)",
+                                "display": "P(Symptoms|¬Control)",
                                 "num": "9",
                                 "display": "Symptoms",
-                                "givenName": "P(Symptoms|¬Cure)",
+                                "givenName": "P(Symptoms|¬Control)",
                                 "given": ".40",
                                 "parentTree": "Treat",
                                 "value": "0"
@@ -61,7 +61,7 @@ var data = [
                                 "name": "Treat&¬Cure&¬Symptoms",
                                 "display": "No Symptoms",
                                 "num": "10",
-                                "givenName": "P(¬Symptoms|¬Cure)",
+                                "givenName": "P(¬Symptoms|¬Control)",
                                 "parentTree": "Treat",
                                 "value": "0"
                             }
@@ -78,17 +78,17 @@ var data = [
                 "children": [
                     {
                         "name": "¬Treat&Cure",
-                        "display": "Cure",
+                        "display": "Control",
                         "num": "5",
                         "given": ".20",
-                        "givenName": "P(Cure)",
+                        "givenName": "P(Control)",
                         "parentTree": "NoTreat",
                         "children": [
                             {
                                 "name": "¬Treat&Cure&Symptoms",
                                 "display": "Symptoms",
                                 "num": "11",
-                                "givenName": "P(Symptoms|Cure)",
+                                "givenName": "P(Symptoms|Control)",
                                 "given": ".10",
                                 "parentTree": "NoTreat",
                                 "value": "10"
@@ -97,7 +97,7 @@ var data = [
                                 "name": "¬Treat&Cure&¬Symptoms",
                                 "display": "No Symptoms",
                                 "num": "12",
-                                "givenName": "P(¬Symptoms|Cure)",
+                                "givenName": "P(¬Symptoms|Control)",
                                 "parentTree": "NoTreat",
                                 "value": "10"
                             }
@@ -105,17 +105,17 @@ var data = [
                     },
                     {
                         "name": "¬Treat&¬Cure",
-                        "display": "No Cure",
+                        "display": "No Control",
                         "num": "6",
                         "given": ".9",
-                        "givenName": "P(¬Cure)",
+                        "givenName": "P(¬Control)",
                         "parentTree": "NoTreat",
                         "children": [
                             {
                                 "name": "¬Treat&¬Cure&Symptoms",
                                 "display": "Symptoms",
                                 "num": "13",
-                                "givenName": "P(Symptoms|¬Cure)",
+                                "givenName": "P(Symptoms|¬Control)",
                                 "given": ".10",
                                 "parentTree": "NoTreat",
                                 "value": "10"
@@ -124,7 +124,7 @@ var data = [
                                 "name": "¬Treat&¬Cure&¬Symptoms",
                                 "display": "No Symptoms",
                                 "num": "14",
-                                "givenName": "P(¬Symptoms|¬Cure)",
+                                "givenName": "P(¬Symptoms|¬Control)",
                                 "parentTree": "NoTreat",
                                 "value": "10"
                             }
@@ -856,14 +856,15 @@ function update(source) {
     }
 
     // update conditional probabilities
-    d3.selectAll(".condProbText")
-    .text(function (d) {
-        if (d.given) {
-            return d.given;
-        } else {
-            return "";
-        }
-    })
+    d3.selectAll("#condProbText")
+        .text(function (d) {
+            if (d.given) {
+                // console.log(d.given)
+                return d.given;
+            } else {
+                return "";
+            }
+        })
 
     // update joint probabilities
     d3.selectAll("#jointProb")
