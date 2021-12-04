@@ -17,7 +17,7 @@ var data = [
                         "num": "3",
                         "display": "Control",
                         "givenName": "P(Control)",
-                        "given": ".30",
+                        "given": ".60",
                         "parentTree": "Treat",
                         "children": [
                             {
@@ -26,7 +26,7 @@ var data = [
                                 "num": "7",
                                 "display": "Symptoms",
                                 "givenName": "P(Symptoms|Control)",
-                                "given": ".40",
+                                "given": ".30",
                                 "parentTree": "Treat",
                                 "value": "0"
                             },
@@ -53,7 +53,7 @@ var data = [
                                 "num": "9",
                                 "display": "Symptoms",
                                 "givenName": "P(Symptoms|¬Control)",
-                                "given": ".40",
+                                "given": ".30",
                                 "parentTree": "Treat",
                                 "value": "0"
                             },
