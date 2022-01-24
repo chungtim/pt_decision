@@ -205,17 +205,17 @@ d3.select("#notTreatCure").attr("value", notTreatCure.given);
 d3.select("#notTreatCureSymptoms").attr("value", notTreatCureSymptoms.given);
 d3.select("#notTreatNotCureSymptoms").attr("value", notTreatNotCureSymptoms.given);
 
-// cure symptoms
-d3.select("#cureSymptoms").attr("value", treatCureSymptoms.value);
+// // cure symptoms
+// d3.select("#cureSymptoms").attr("value", treatCureSymptoms.value);
 
-// cure no symptoms
-d3.select("#cureNoSymptoms").attr("value", treatCureNotSymptoms.value);
+// // cure no symptoms
+// d3.select("#cureNoSymptoms").attr("value", treatCureNotSymptoms.value);
 
-// no cure and symptoms
-d3.select("#noCureSymptoms").attr("value", treatNotCureSymptoms.value);
+// // no cure and symptoms
+// d3.select("#noCureSymptoms").attr("value", treatNotCureSymptoms.value);
 
-// no cure no symptoms
-d3.select("#noCureNoSymptoms").attr("value", treatNotCureNotSymptoms.value);
+// // no cure no symptoms
+// d3.select("#noCureNoSymptoms").attr("value", treatNotCureNotSymptoms.value);
 
 
 d3.select("#treatmentForm").on("submit", function() {
