@@ -205,7 +205,8 @@ d3.select("#notTreatCure").attr("value", notTreatCure.given);
 d3.select("#notTreatCureSymptoms").attr("value", notTreatCureSymptoms.given);
 d3.select("#notTreatNotCureSymptoms").attr("value", notTreatNotCureSymptoms.given);
 
-// // cure symptoms
+// Removed so default values are set on the client side
+// cure symptoms
 // d3.select("#cureSymptoms").attr("value", treatCureSymptoms.value);
 
 // // cure no symptoms
