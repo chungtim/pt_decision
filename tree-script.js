@@ -732,7 +732,7 @@ function update(source) {
                 var cureNoCure = d.parent.display;
                 var symptomNoSymptom = d.display;
                 if (cureNoCure.slice(0,2) == 'No') {
-                    cureNoCure = '¬Cure'
+                    cureNoCure = '¬Control'
                 }
                 if (symptomNoSymptom.slice(0,2) == 'No') {
                     symptomNoSymptom = '¬Symptoms'
