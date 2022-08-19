@@ -7,7 +7,7 @@ var data = [
         "children": [
             {
                 "name": "Treat",
-                "decisionNode": "True",
+                "decisionNode": "False",
                 "num": "1",
                 "display": "Treat",
                 "parentTree": "Treat",
@@ -71,7 +71,7 @@ var data = [
             },
             {
                 "name": "¬Treat",
-                "decisionNode": "True",
+                "decisionNode": "False",
                 "display": "No Treat",
                 "num": "2",
                 "parentTree": "NoTreat",
@@ -140,7 +140,7 @@ var data = [
 
 var grandChildSpacing = 0;
 
-var margin = { top: 00, right: 140, bottom: 0, left: 90 },
+var margin = { top: 00, right: 140, bottom: 0, left: 100 },
     width = 1400 - margin.right - margin.left,
     height = 1000 - margin.top - margin.bottom + (grandChildSpacing * 4);
 
@@ -162,7 +162,7 @@ var svg = d3.select(".svgHolder").append("svg")
     .append("g")
     .attr("id", "topg")
     .attr("class", "topg")
-    .attr("transform", "translate(90,500)")
+    .attr("transform", "translate(160,500)")
     ;
 
 root = data[0];
@@ -290,45 +290,55 @@ function updateExpectedValues() {
     var cure_symptoms_value = d3.select("#cureSymptoms").property("value");
     cure_symptoms_value = Number(cure_symptoms_value)
     var cure_no_symptoms_val = d3.select("#cureNoSymptoms").property("value");
-    cure_no_symptoms_val = Number(cure_no_symptoms_val).toFixed(2);
+    cure_no_symptoms_val = Number(cure_no_symptoms_val).toFixed(1);
     var no_cure_symptoms_val = d3.select("#noCureSymptoms").property("value");
-    no_cure_symptoms_val = Number(no_cure_symptoms_val).toFixed(2);
+    no_cure_symptoms_val = Number(no_cure_symptoms_val).toFixed(1);
     var no_cure_no_symptoms_val = d3.select("#noCureNoSymptoms").property("value");
-    no_cure_no_symptoms_val = Number(no_cure_no_symptoms_val).toFixed(2);
+    no_cure_no_symptoms_val = Number(no_cure_no_symptoms_val).toFixed(1);
 
     // layer 3
-    treatCureSymptoms.value = (cure_symptoms_value * treatCureSymptoms.probability).toFixed(2);
-    treatCureNotSymptoms.value = (cure_no_symptoms_val * treatCureNotSymptoms.probability).toFixed(2)
-    treatNotCureSymptoms.value = (no_cure_symptoms_val * treatNotCureSymptoms.probability).toFixed(2)
-    treatNotCureNotSymptoms.value = (no_cure_no_symptoms_val * treatNotCureNotSymptoms.probability).toFixed(2)
+    treatCureSymptoms.value = (cure_symptoms_value * 1).toFixed(0);
+    treatCureNotSymptoms.value = (cure_no_symptoms_val * 1).toFixed(0)
+    treatNotCureSymptoms.value = (no_cure_symptoms_val * 1).toFixed(0)
+    treatNotCureNotSymptoms.value = (no_cure_no_symptoms_val * 1).toFixed(0)
 
-    notTreatCureSymptoms.value = (cure_symptoms_value * notTreatCureSymptoms.probability).toFixed(2)
-    notTreatCureNotSymptoms.value = (cure_no_symptoms_val * notTreatCureNotSymptoms.probability).toFixed(2)
-    notTreatNotCureSymptoms.value = (no_cure_symptoms_val * notTreatNotCureSymptoms.probability).toFixed(2)
-    notTreatNotCureNotSymptoms.value = (no_cure_no_symptoms_val * notTreatNotCureNotSymptoms.probability).toFixed(2)
+    notTreatCureSymptoms.value = (cure_symptoms_value * 1).toFixed(0)
+    notTreatCureNotSymptoms.value = (cure_no_symptoms_val * 1).toFixed(0)
+    notTreatNotCureSymptoms.value = (no_cure_symptoms_val * 1).toFixed(0)
+    notTreatNotCureNotSymptoms.value = (no_cure_no_symptoms_val * 1).toFixed(0)
+
+    // treatCureSymptoms.value = (cure_symptoms_value).toFixed(2);
+    // treatCureNotSymptoms.value = (cure_no_symptoms_val).toFixed(2)
+    // treatNotCureSymptoms.value = (no_cure_symptoms_val).toFixed(2)
+    // treatNotCureNotSymptoms.value = (no_cure_no_symptoms_val).toFixed(2)
+
+    // notTreatCureSymptoms.value = (cure_symptoms_value).toFixed(2)
+    // notTreatCureNotSymptoms.value = (cure_no_symptoms_val).toFixed(2)
+    // notTreatNotCureSymptoms.value = (no_cure_symptoms_val).toFixed(2)
+    // notTreatNotCureNotSymptoms.value = (no_cure_no_symptoms_val).toFixed(2)
 
 
     // expected values
     // layer 2
     treatCure.value = ((treatCureSymptoms.given * treatCureSymptoms.value) +
-        (treatCureNotSymptoms.given * treatCureNotSymptoms.value)).toFixed(2);
+        (treatCureNotSymptoms.given * treatCureNotSymptoms.value)).toFixed(1);
 
     treatNotCure.value = ((treatNotCureSymptoms.given * treatNotCureSymptoms.value) +
-        (treatNotCureNotSymptoms.given * treatNotCureNotSymptoms.value)).toFixed(2);
+        (treatNotCureNotSymptoms.given * treatNotCureNotSymptoms.value)).toFixed(1);
 
 
     notTreatCure.value = ((notTreatCureSymptoms.given * notTreatCureSymptoms.value) +
-        (notTreatCureNotSymptoms.given * notTreatCureNotSymptoms.value)).toFixed(2);
+        (notTreatCureNotSymptoms.given * notTreatCureNotSymptoms.value)).toFixed(1);
 
     notTreatNotCure.value = ((notTreatNotCureSymptoms.given * notTreatNotCureSymptoms.value) +
-        (notTreatNotCureNotSymptoms.given * notTreatNotCureNotSymptoms.value)).toFixed(2);
+        (notTreatNotCureNotSymptoms.given * notTreatNotCureNotSymptoms.value)).toFixed(1);
 
     // layer 1
     treat.value = ((treatCure.given * treatCure.value) +
-        (treatNotCure.given * treatNotCure.value)).toFixed(2);
+        (treatNotCure.given * treatNotCure.value)).toFixed(1);
 
     notTreat.value = ((notTreatCure.given * notTreatCure.value) +
-        (notTreatNotCure.given * notTreatNotCure.value)).toFixed(2);
+        (notTreatNotCure.given * notTreatNotCure.value)).toFixed(1);
 }
 
 function updateAll() {
@@ -494,20 +504,21 @@ function update(source) {
             var y = d.y;
             var x = d.x;
             d.shiftX = x;
-            if (d.depth == 3) {
-                if (grandChildCount % 3) {
-                    x = x - grandChildSpacing;
-                    d.shiftX = x;
-                } else {
-                    x = x + grandChildSpacing;
-                    d.shiftX = x;
-                }
-                grandChildCount++;
-            }
+            // if (d.depth == 3) {
+            //     if (grandChildCount % 3) {
+            //         x = x - grandChildSpacing;
+            //         d.shiftX = x;
+            //     } else {
+            //         x = x + grandChildSpacing;
+            //         d.shiftX = x;
+            //     }
+            //     grandChildCount++;
+            // }
             d.dy = y;
             d.dx = x;
             return "translate(" + y + "," + x + ")";
-        });
+        }
+    );
 
 
     
@@ -516,33 +527,35 @@ function update(source) {
     // ================================================================
     // node variables
     var widthHeight = 95
-    var nodeXpos = -48
+    var nodeXpos = -45
     var nodeYpos = -50
 
     // root variables
-    var rootWidth = 200
-    var rootHeight = 140
-    var rootXpos = -20
-    var rootYpos = -75
+    var rootWidth = 170
+    var rootHeight = 130
+    var rootXpos = -6
+    var rootYpos = -72
+
+    var leafDepth = 3
 
 
     nodeEnter.append("rect")
         .attr("rx", function (d) {
-            if (d.decisionNode == "True") { //only decision nodes are square
+            if (d.decisionNode == "True" | d == root) { //only decision nodes are square
                 return 0
             }
-            if (d == root) {
-                return 15
-            }
+            // if (d == root) {
+            //     return 15
+            // }
             return 100
         })
         .attr("ry", function (d) {
-            if (d.decisionNode == "True") { //only decision nodes are square
+            if (d.decisionNode == "True" | d == root) { //only decision nodes are square
                 return 0
             }
-            if (d == root) {
-                return 15
-            }
+            // if (d == root) {
+            //     return 15
+            // }
             return 100
         })
         .attr("width", function(d) {
@@ -573,12 +586,18 @@ function update(source) {
         .style("stroke", function(d) {
             if (d == root) {
                 return baseStrokeColor
-            } else {
-                if (d.parentTree == "Treat") {
-                    return blueColor(d.value)
-                }
-                return orangeColor(d.value)
             }
+            
+            if (d.depth >= 3) {
+                console.log(d.depth)
+                return "white"
+            }
+
+            if (d.parentTree == "Treat") {
+                return blueColor(d.value)
+            }
+            return orangeColor(d.value)
+            
         })
         .style("stroke-width", function(d) {
             if (d == root) {
@@ -597,9 +616,9 @@ function update(source) {
             return baseOrange;
         })
         .style('stroke-dasharray', function(d) {
-            if (d == root) {
-                return ('2,3')
-            }
+            // if (d == root) {
+            //     return ('2,3')
+            // }
         })
 
     //=================================================================
@@ -627,19 +646,28 @@ function update(source) {
             if (d==root) {
                 return 900
             }
+            if (d.depth >= leafDepth) {
+                return "bold"
+            }
+
         })
 
         .attr("text-anchor", function(d) {
             if (d == root) {
                 return "top"
             }
+            if (d.depth >= leafDepth) {
+                return "right"
+            }
             return "middle"
         })
         .style("fill-opacity", 1)
+        
         .attr("x", function(d) {
             if (d == root) {
                 return rootTextXpos
             }
+
         })
         .attr("y", function(d) {
             if (d == root) {
@@ -720,30 +748,35 @@ function update(source) {
             } else { return "" }
         })
         .attr("y", "20")
-        .attr("text-anchor", "middle")
+        .attr("text-anchor", function(d) {
+            if (d.depth >= leafDepth) {
+                return "right"
+            }
+            return "middle"
+        })
         .attr("class", "expValue");
 
 
     //  last layer probability text
-    nodeEnter.append("text")
-        .text(function (d) {
-            var text = "";
-            if (d.depth == 3) {
-                var cureNoCure = d.parent.display;
-                var symptomNoSymptom = d.display;
-                if (cureNoCure.slice(0,2) == 'No') {
-                    cureNoCure = '¬Control'
-                }
-                if (symptomNoSymptom.slice(0,2) == 'No') {
-                    symptomNoSymptom = '¬Symptoms'
-                }
-                text = "P(" + cureNoCure + " and " + symptomNoSymptom + ")";
-            }
-            return text;
-        })
-        .attr("class", "jointProbText")
-        .attr("transform", "translate(65)")
-        ;
+    // nodeEnter.append("text")
+    //     .text(function (d) {
+    //         var text = "";
+    //         if (d.depth == 3) {
+    //             var cureNoCure = d.parent.display;
+    //             var symptomNoSymptom = d.display;
+    //             if (cureNoCure.slice(0,2) == 'No') {
+    //                 cureNoCure = '¬Control'
+    //             }
+    //             if (symptomNoSymptom.slice(0,2) == 'No') {
+    //                 symptomNoSymptom = '¬Symptoms'
+    //             }
+    //             text = "P(" + cureNoCure + " and " + symptomNoSymptom + ")";
+    //         }
+    //         return text;
+    //     })
+    //     .attr("class", "jointProbText")
+    //     .attr("transform", "translate(65)")
+    //     ;
 
         
     // Label the links with the "Given" values
@@ -756,8 +789,7 @@ function update(source) {
         }
     })
         .append("g")
-
-        .attr("transform", "translate(-230)")
+        .attr("transform", "translate(-220)")
 
     gGiven.append("text")
         .attr("class", "branchText")
@@ -805,7 +837,7 @@ function update(source) {
             .attr("opacity", 0)
         d3.selectAll(".expValue")
             .attr("opacity", function (d) {
-                if (d.name == "Treat" | d.name == "¬Treat") {
+                if (d.name == "Treat" | d.name == "¬Treat" | d.depth >= leafDepth) {
                     return 100
                 }
                 return 0;
@@ -871,7 +903,8 @@ function update(source) {
     d3.selectAll("#jointProb")
         .text(function (d) {
             if (d.probability) {
-                return d.probability
+                // return d.probability
+                return ""
 
             } else { return "" }
         })
@@ -891,6 +924,8 @@ function update(source) {
         .style("stroke", function(d) {
             var treatExpVal = Number(root.children[0].value)
             var noTreatExpVal = Number(root.children[1].value)
+            
+            if (d.depth >= leafDepth) {return} // does not apply to leaf nodes
 
             if (treatExpVal > noTreatExpVal) { // treat exp value greater
                 
@@ -926,7 +961,10 @@ function update(source) {
             }
             return minOrange;
         })
+        
         .attr("fill", function(d) {
+            if (d.depth >= leafDepth) {return "white"} // does not apply to leaf nodes
+
             if (d == root) {
                 var higherEV = higherExpVal()
                 if (higherEV == "Treat") {
@@ -1016,7 +1054,7 @@ function update(source) {
 
     d3.select("#rootDiffText")
         .text(function (d) {
-            var diff = Math.abs(d.children[0].value -  d.children[1].value).toFixed(2);
+            var diff = Math.abs(d.children[0].value -  d.children[1].value).toFixed(1);
             return "Difference = " + diff
         })
         .attr("x", 25)
