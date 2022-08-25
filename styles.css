@@ -70,7 +70,7 @@ rect {
     text-align: right;
 }
 
-.infoContainer {
+.infoContainer, .disclaimer-container {
     display: table;  
     margin: auto;  
 }
@@ -79,7 +79,7 @@ rect {
     display: table-row;
 }
 
-.buttonBox {
+.buttonBox, .disclaimer {
     display: table-cell;
     padding: 20px;
 }
